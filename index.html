@@ -83,6 +83,18 @@
   .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
   .user-pill{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:20px;background:rgba(255,255,255,0.55);border:1px solid var(--glass-border);}
   .user-pill .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue-700),var(--ios-blue));color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:600;}
+  .role-wrap{position:relative;cursor:pointer;padding-right:10px;}
+  .user-role{font-size:10.2px;color:var(--ink-3);font-weight:500;margin-top:1px;}
+  .role-chevron{width:12px;height:12px;color:var(--ink-3);flex:none;}
+  .role-menu{position:absolute;top:44px;right:0;width:270px;border-radius:16px;padding:8px;z-index:30;display:none;}
+  .role-menu.show{display:block;}
+  .role-menu-head{font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.03em;padding:8px 10px 6px;}
+  .role-opt{padding:10px 10px;border-radius:12px;cursor:pointer;}
+  .role-opt:hover{background:rgba(10,61,102,0.05);}
+  .role-opt.active{background:rgba(10,132,255,0.10);}
+  .role-opt-name{font-size:12.6px;font-weight:600;color:var(--ink);}
+  .role-opt.active .role-opt-name{color:var(--blue-900);}
+  .role-opt-sub{font-size:10.8px;color:var(--ink-3);margin-top:2px;}
   .user-pill span{font-size:12.5px;font-weight:500;color:var(--ink);}
   .icon-btn{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,0.55);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;flex:none;}
   .icon-btn svg{width:16px;height:16px;color:var(--blue-800);}
@@ -92,6 +104,9 @@
   .filterbar{display:flex;flex-direction:column;gap:10px;padding:14px 20px;margin:12px 14px 0;border-radius:var(--r-md);}
   .filter-row1{display:flex;align-items:center;gap:14px;}
   .search-wrap{position:relative;flex:1;}
+  .history-toolbar{display:flex;align-items:center;gap:10px;padding:4px 4px 10px;}
+  .search-wrap.small input{padding:9px 12px 9px 34px;font-size:12.5px;}
+  .search-wrap.small svg{left:11px;width:14px;height:14px;}
   .search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-3);pointer-events:none;}
   .search-wrap input{width:100%;padding:11px 14px 11px 40px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,0.7);font-size:13.5px;color:var(--ink);}
   .search-wrap input:focus{outline:2px solid var(--ios-blue);outline-offset:1px;}
@@ -328,7 +343,8 @@
 
   .note-box{padding:14px;border-radius:var(--r-md);background:rgba(255,255,255,0.5);border:1px solid var(--line);font-size:12.6px;color:var(--ink-2);line-height:1.7;margin-bottom:12px;}
   .note-box b{color:var(--ink);}
-  textarea.note-input{width:100%;min-height:70px;border-radius:var(--r-md);border:1px solid var(--line);background:rgba(255,255,255,0.6);padding:12px;font-size:12.6px;resize:vertical;}
+  textarea.note-input{width:100%;min-height:90px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,0.65);padding:11px 13px;font-size:13px;resize:vertical;font-family:inherit;color:var(--ink);}
+  textarea.note-input::placeholder, .modal textarea::placeholder{color:var(--ink-3);font-style:italic;}
 
   /* IMAGE VIEWER */
   .image-panel{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;background:#fff;border-radius:var(--r-lg);box-shadow:0 3px 16px rgba(10,61,102,0.08);border:1px solid rgba(10,61,102,0.05);overflow:hidden;}
@@ -349,28 +365,41 @@
   .iv-thumb .tln{height:3px;background:rgba(10,61,102,0.15);margin-bottom:3px;border-radius:2px;}
   .iv-thumb .lbl{font-size:8px;color:var(--ink-3);text-align:center;margin-top:3px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
+  .tab-pad{padding:18px 20px;}
+  .ps-head{padding:16px 20px 13px;border-bottom:1px solid var(--line);}
+  .ps-h{font-size:15px;font-weight:700;color:var(--blue-950);}
+  .ps-sub{font-size:12px;color:var(--ink-3);margin-top:3px;}
+
   /* PAYMENT SPREADSHEET (Tính chi trả) */
-  .payspread-table{width:100%;border-collapse:collapse;margin-bottom:10px;}
-  .payspread-table th{font-size:10.6px;color:var(--ink-3);text-align:left;font-weight:500;padding:6px;}
-  .payspread-table td{padding:10px 6px;border-top:1px solid var(--line);font-size:12.6px;vertical-align:middle;}
-  .payspread-table .in{color:var(--ink);}
-  .payspread-table .sub{font-size:10.6px;color:var(--ink-3);}
-  .payspread-table input[type=text]{width:130px;padding:8px 10px;font-size:13px;margin:0;border-radius:9px;text-align:right;font-weight:600;}
-  .payspread-total-row{display:flex;justify-content:space-between;padding:12px 6px;font-size:14px;font-weight:700;color:var(--blue-900);border-top:1.5px solid var(--line);}
-  .payspread-live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2);padding:10px 12px;border-radius:11px;background:rgba(10,61,102,0.05);margin-top:4px;}
+  .payspread-table{width:100%;border-collapse:collapse;}
+  .payspread-table th{font-size:10.5px;color:var(--ink-3);text-align:left;font-weight:600;padding:0 6px 10px;text-transform:uppercase;letter-spacing:.03em;}
+  .payspread-table th:last-child{text-align:right;}
+  .payspread-table td{padding:16px 6px;border-top:1px solid var(--line);font-size:13px;vertical-align:middle;}
+  .payspread-table tr:first-child td{border-top:none;}
+  .payspread-table td:last-child{text-align:right;}
+  .payspread-table .in{color:var(--ink);font-weight:600;font-size:13.2px;display:block;}
+  .payspread-table .sub{font-size:11px;color:var(--ink-3);margin-top:4px;display:block;font-weight:400;}
+  .payspread-table input[type=text]{width:140px;padding:9px 12px;font-size:13.5px;margin:0;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,0.7);text-align:right;font-weight:600;color:var(--blue-900);}
+  .payspread-table input[type=text]:focus{outline:none;border-color:var(--ios-blue);box-shadow:0 0 0 3px rgba(10,132,255,0.12);}
+  .payspread-total-row{display:flex;justify-content:space-between;align-items:center;padding:16px 6px 4px;font-size:14.5px;font-weight:700;color:var(--blue-950);border-top:1.5px solid var(--line);margin-top:8px;}
+  .payspread-live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2);padding:11px 13px;border-radius:12px;background:rgba(10,61,102,0.05);margin-top:14px;}
   .pl-dot{width:8px;height:8px;border-radius:50%;flex:none;}
   .pl-dot.ok{background:var(--green);}
   .pl-dot.warn{background:var(--amber);}
 
   /* STAGE 3-4: ÁP THẨM QUYỀN / KÝ / TRÌNH DUYỆT */
   .stage-center{flex:1;width:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;box-sizing:border-box;}
-  .authority-card{width:380px;text-align:center;}
-  .ac-label{font-size:12.5px;color:var(--ink-3);font-weight:500;}
-  .ac-amount{font-size:32px;font-weight:700;color:var(--blue-900);margin:8px 0 16px;letter-spacing:-.3px;}
-  .ac-divider{height:1px;background:var(--line);margin-bottom:16px;}
-  .ac-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink-2);margin-bottom:14px;}
+  .authority-card{width:400px;text-align:center;}
+  .ac-label{font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+  .ac-amount{font-size:36px;font-weight:800;color:var(--blue-950);margin:10px 0 22px;letter-spacing:-.5px;}
+  .ac-divider{height:1px;background:var(--line);margin:0 0 18px;}
+  .ac-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px;}
+  .ac-row span{font-size:12px;color:var(--ink-3);}
+  .ac-row b{font-size:15px;color:var(--blue-950);font-weight:700;}
+  .ac-note{font-size:12px;padding:12px 14px;border-radius:12px;text-align:left;line-height:1.6;margin-bottom:24px;}
+  .ac-hint{font-size:11.5px;color:var(--ink-3);text-align:center;margin-bottom:14px;line-height:1.5;}
+  .ac-form-label{font-size:13px;font-weight:700;color:var(--ink);text-align:left;display:block;margin-bottom:9px;}
   .ac-row b{color:var(--blue-950);}
-  .ac-note{font-size:12px;padding:11px 14px;border-radius:11px;text-align:left;line-height:1.6;}
   .ac-note.ok{background:rgba(31,169,113,0.10);color:var(--green);}
   .ac-note.warn{background:rgba(198,138,18,0.10);color:var(--amber);}
 
@@ -558,12 +587,34 @@
           </div>
         </div>
       </div>
-      <div class="user-pill"><div class="av">TH</div><span>Trần Minh Hải</span></div>
+      <div class="user-pill role-wrap" onclick="toggleRoleMenu(event)">
+        <div class="av">TH</div>
+        <div>
+          <span id="userNameLabel">Trần Minh Hải</span>
+          <div class="user-role" id="userRoleLabel">Chuyên viên bồi thường</div>
+        </div>
+        <svg class="role-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <div class="role-menu glass-strong" id="roleMenu">
+          <div class="role-menu-head">Giả lập vai trò (Ma trận 4)</div>
+          <div class="role-opt active" data-role="Chuyên viên bồi thường" onclick="switchRole('Chuyên viên bồi thường')">
+            <div class="role-opt-name">Chuyên viên bồi thường</div><div class="role-opt-sub">Xử lý hồ sơ mới, ngưỡng ≤ 10 triệu</div>
+          </div>
+          <div class="role-opt" data-role="Trưởng phòng bồi thường" onclick="switchRole('Trưởng phòng bồi thường')">
+            <div class="role-opt-name">Trưởng phòng bồi thường</div><div class="role-opt-sub">Duyệt hồ sơ 10–30 triệu / Nội trú, tai nạn…</div>
+          </div>
+          <div class="role-opt" data-role="Giám đốc nghiệp vụ" onclick="switchRole('Giám đốc nghiệp vụ')">
+            <div class="role-opt-name">Giám đốc nghiệp vụ</div><div class="role-opt-sub">Duyệt hồ sơ 30–60 triệu / bệnh hiểm nghèo</div>
+          </div>
+          <div class="role-opt" data-role="Hội đồng bồi thường" onclick="switchRole('Hội đồng bồi thường')">
+            <div class="role-opt-name">Hội đồng bồi thường</div><div class="role-opt-sub">Duyệt hồ sơ trên 60 triệu / có cờ gian lận</div>
+          </div>
+        </div>
+      </div>
       <div class="icon-btn" onclick="doLogout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
     </div>
   </div>
 
-  <div class="filterbar glass">
+  <div class="filterbar glass" id="queueFilterbar">
     <div class="filter-row1">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
@@ -576,14 +627,7 @@
       </select>
     </div>
     <div class="filter-row2">
-      <div class="status-chips" id="statusChips">
-        <span class="status-chip active" onclick="setQueueStatusFilter('',this)">Tất cả</span>
-        <span class="status-chip" onclick="setQueueStatusFilter('new',this)">Mới</span>
-        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_customer',this)">Chờ bổ sung</span>
-        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_siu',this)">Chờ SIU</span>
-        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_medical',this)">Chờ ý kiến y khoa</span>
-        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_approval',this)">Chờ cấp trên duyệt</span>
-      </div>
+      <div class="status-chips" id="statusChips"></div>
       <select id="fType" class="mini-select" onchange="renderQueue()">
         <option value="">Loại quyền lợi: tất cả</option>
         <option>Nội trú</option><option>Ngoại trú</option><option>Tai nạn</option><option>Bệnh hiểm nghèo</option>
@@ -606,12 +650,22 @@
 
   <div id="historyView">
     <div class="history-panel glass">
+      <div class="history-toolbar">
+        <div class="search-wrap small">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input type="text" id="histSearch" oninput="renderHistory()" placeholder="Tìm theo mã case hoặc tên NĐBH…">
+        </div>
+        <select id="histRange" class="sort-flat" onchange="renderHistory()">
+          <option value="all">Khoảng thời gian: Tất cả</option>
+          <option value="today">Hôm nay</option>
+          <option value="week">Tuần này</option>
+          <option value="month">Tháng này</option>
+        </select>
+      </div>
       <div class="history-filters" id="historyFilters">
-        <span class="hfchip active" onclick="setHistFilter('all',this)">Tất cả</span>
+        <span class="hfchip active" onclick="setHistFilter('all',this)">Tất cả lịch sử</span>
         <span class="hfchip" onclick="setHistFilter('approved',this)">Đã duyệt</span>
         <span class="hfchip" onclick="setHistFilter('rejected',this)">Từ chối</span>
-        <span class="hfchip" onclick="setHistFilter('pending_approval',this)">Đang chờ cấp trên ký</span>
-        <span class="hfchip" onclick="setHistFilter('pending_medical',this)">Đang chờ ý kiến y khoa</span>
       </div>
       <div id="historyList"></div>
     </div>
@@ -807,10 +861,13 @@
     qStatusFilter = val;
     document.querySelectorAll('#statusChips .status-chip').forEach(c=>c.classList.remove('active'));
     el.classList.add('active');
+    activeId = null;
+    window._current = null;
+    document.getElementById('casePanel').innerHTML = noSelectionState();
     renderQueue();
   }
   const AGENT_NAME = 'Trần Minh Hải';
-  const CURRENT_USER_LEVEL = 'Chuyên viên bồi thường';
+  let CURRENT_USER_LEVEL = 'Chuyên viên bồi thường';
   const AUTHORITY_RANK = {'Chuyên viên bồi thường':1,'Trưởng phòng bồi thường':2,'Giám đốc nghiệp vụ':3,'Hội đồng bồi thường':4};
   function computeRequiredAuthority(amount, baseAuthority){
     let byAmount;
@@ -916,9 +973,40 @@
     };
   }
 
+  function renderStatusChips(){
+    const box = document.getElementById('statusChips');
+    if(CURRENT_USER_LEVEL==='Chuyên viên bồi thường'){
+      box.innerHTML = `
+        <span class="status-chip active" onclick="setQueueStatusFilter('',this)">Tất cả</span>
+        <span class="status-chip" onclick="setQueueStatusFilter('new',this)">Mới</span>
+        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_customer',this)">Chờ bổ sung</span>
+        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_siu',this)">Chờ SIU</span>
+        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_medical',this)">Chờ ý kiến y khoa</span>
+        <span class="status-chip" onclick="setQueueStatusFilter('awaiting_approval',this)">Đã trình cấp trên</span>`;
+    } else {
+      box.innerHTML = `<span class="status-chip active" onclick="setQueueStatusFilter('',this)">Hồ sơ chờ tôi duyệt</span>`;
+    }
+  }
+  function toggleRoleMenu(e){
+    e.stopPropagation();
+    document.getElementById('roleMenu').classList.toggle('show');
+  }
+  function switchRole(role){
+    CURRENT_USER_LEVEL = role;
+    document.getElementById('userRoleLabel').textContent = role;
+    document.querySelectorAll('#roleMenu .role-opt').forEach(el=>el.classList.toggle('active', el.dataset.role===role));
+    document.getElementById('roleMenu').classList.remove('show');
+    qStatusFilter = '';
+    activeId = null; window._current = null;
+    renderStatusChips();
+    renderQueue();
+    document.getElementById('casePanel').innerHTML = noSelectionState();
+    showToast('Đang giả lập vai trò: '+role);
+  }
   function doLogin(){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('app').classList.add('active');
+    renderStatusChips();
     renderQueue();
     document.getElementById('casePanel').innerHTML = noSelectionState();
   }
@@ -928,12 +1016,18 @@
   }
 
   function slaSort(a,b){ const order={urgent:0,warn:1,ok:2}; return order[a.sla]-order[b.sla]; }
+  function isVisibleForRole(c){
+    if(CURRENT_USER_LEVEL==='Chuyên viên bồi thường') return true;
+    if(c.status==='awaiting_approval') return c.escalatedTo===CURRENT_USER_LEVEL;
+    return false;
+  }
   function filteredCases(){
     const type = document.getElementById('fType').value;
     const status = qStatusFilter;
     const risk = document.getElementById('fRisk').value;
     const q = (document.getElementById('fSearch').value||'').trim().toLowerCase();
     return cases.filter(c=>{
+      if(!isVisibleForRole(c)) return false;
       if(type && c.type!==type) return false;
       if(status && c.status!==status) return false;
       if(risk==='flag' && !c.fraudFlag) return false;
@@ -972,8 +1066,9 @@
         </div>
       </div>`;
     }).join('');
-    document.getElementById('statPending').textContent = cases.length;
-    document.getElementById('statUrgent').textContent = cases.filter(c=>c.sla==='urgent'&&c.status==='new').length;
+    const visibleCases = cases.filter(isVisibleForRole);
+    document.getElementById('statPending').textContent = visibleCases.length;
+    document.getElementById('statUrgent').textContent = visibleCases.filter(c=>c.sla==='urgent'&&c.status==='new').length;
   }
 
   function toggleSelect(id, checked){ if(checked) selectedIds.add(id); else selectedIds.delete(id); renderQueue(); }
@@ -1039,7 +1134,11 @@
     } else if(c.status==='awaiting_medical'){
       bodyHtml = `<div class="status-banner medical"><div class="t">Đang chờ ý kiến Bác sĩ thẩm định y khoa nội bộ</div><div class="d">${c.note}<br>Đây là câu hỏi chuyên môn y khoa, không phải nghi ngờ gian lận — bạn sẽ nhận lại case này để ra quyết định sau khi có kết luận từ bác sĩ thẩm định.</div></div>`;
     } else {
-      bodyHtml = `<div class="status-banner"><div class="t">Đã trình lên cấp trên — chờ ký duyệt (four-eyes)</div><div class="d">${c.note}<br>Case vượt ngưỡng thẩm quyền của bạn nên không thể tự ký. Bạn sẽ thấy kết quả tại đây sau khi <b>${c.authority}</b> ký hoặc trả lại yêu cầu chỉnh sửa.</div></div>`;
+      if(c.escalatedTo===CURRENT_USER_LEVEL){
+        bodyHtml = approvalInboxHtml(c);
+      } else {
+        bodyHtml = `<div class="status-banner"><div class="t">Đã trình lên cấp trên — chờ ký duyệt (four-eyes)</div><div class="d">${c.note}<br>Case vượt ngưỡng thẩm quyền của bạn nên không thể tự ký. Bạn sẽ thấy kết quả tại đây sau khi <b>${c.escalatedTo||c.authority}</b> ký hoặc trả lại yêu cầu chỉnh sửa.</div></div>`;
+      }
     }
 
     document.getElementById('casePanel').innerHTML = `
@@ -1052,15 +1151,13 @@
           <div class="ch-amount"><div class="lbl">Tổng số tiền yêu cầu</div><div class="val">${fmt(c.amount)}</div></div>
           <div class="kebab" onclick="toggleKebab()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="6" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="18" r="1.4"/></svg>
-            <div class="kebab-menu glass-strong" id="kebabMenu"><button onclick="openSingleReassign()">Chuyển hồ sơ này cho người khác</button></div>
+            <div class="kebab-menu glass-strong" id="kebabMenu">
+              <button onclick="openLookup360(); closeKebab();">Tra cứu 360° NĐBH này</button>
+              <button onclick="openSingleReassign()">Chuyển hồ sơ này cho người khác</button>
+            </div>
           </div>
         </div>
-        <div class="ch-sub">${c.type} · ${c.subject} — ${c.role}
-          <button class="lookup-btn" onclick="openLookup360()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-            Tra cứu 360° NĐBH
-          </button>
-        </div>
+        <div class="ch-sub">${c.type} · ${c.subject} — ${c.role}</div>
       </div>
       ${c.status==='new' ? `<div class="ch-progress"><div class="mini-stepper" id="stepperBar">${miniStepperHtml(stepIdx)}</div></div>` : ''}
       <div class="${bannerClass}">${iconWarn}<div class="d"><b>${c.fraudFlag?'Cảnh báo rủi ro:':'Lý do MCV:'}</b> ${c.mcvReason}</div></div>
@@ -1169,7 +1266,7 @@
           <div class="dp-body" id="dpBody"></div>
         </div>
         <div class="image-panel">
-          <div class="iv-toolbar"><span class="iv-label" style="margin-left:12px;">Lý do từ chối chi trả</span></div>
+          <div class="ps-head"><div class="ps-h">Lý do từ chối chi trả</div></div>
           <div class="tab-pad" style="overflow-y:auto;">
             <label class="field-label">Lý do từ chối (bắt buộc)</label>
             <select id="rejectReasonInline">
@@ -1199,7 +1296,7 @@
         <div class="dp-body" id="dpBody"></div>
       </div>
       <div class="image-panel">
-        <div class="iv-toolbar"><span class="iv-label" style="margin-left:12px;">Bảng tính chi trả — sửa số tiền từng hạng mục</span></div>
+        <div class="ps-head"><div class="ps-h">Bảng tính chi trả</div><div class="ps-sub">Sửa số tiền duyệt cho từng hạng mục</div></div>
         <div class="tab-pad" style="overflow-y:auto;flex:1;">
           <table class="payspread-table" id="paySpreadTable"></table>
           <div class="payspread-total-row">
@@ -1224,9 +1321,9 @@
     window._requiredAuthority = required;
     const selfOk = required===CURRENT_USER_LEVEL;
     const inputBlock = selfOk
-      ? `<p style="font-size:12px;color:var(--ink-2);text-align:center;margin:14px 0 6px;">Nhập mã PIN chữ ký số cá nhân để phát hành quyết định. Thao tác này được ghi vết đầy đủ.</p>
+      ? `<div class="ac-hint">Nhập mã PIN chữ ký số cá nhân để phát hành quyết định. Thao tác này được ghi vết đầy đủ.</div>
          <div class="otp-row"><input maxlength="1"><input maxlength="1"><input maxlength="1"><input maxlength="1"><input maxlength="1"><input maxlength="1"></div>`
-      : `<label class="field-label" style="text-align:left;margin-top:14px;">Ghi chú gửi cấp trên (không bắt buộc)</label>
+      : `<label class="ac-form-label">Ghi chú gửi cấp trên (không bắt buộc)</label>
          <textarea id="escalateNote" class="note-input" placeholder="Ví dụ: đã kiểm tra kỹ chứng từ, đề nghị duyệt theo mức đề xuất…"></textarea>`;
     return `
     <div class="stage-center">
@@ -1392,7 +1489,7 @@
     const items = window._paymentItems;
     const rows = items.map((it,i)=>`
       <tr>
-        <td class="in">${it.name}<br><span class="sub">Theo hoá đơn OCR: ${fmt(it.ocrAmount)}</span></td>
+        <td><span class="in">${it.name}</span><span class="sub">Theo hoá đơn OCR: ${fmt(it.ocrAmount)}</span></td>
         <td><input type="text" value="${Math.round(it.current).toLocaleString('vi-VN')}" oninput="setPayAmount(${i},this.value)"></td>
       </tr>`).join('');
     const table = document.getElementById('paySpreadTable');
@@ -1453,6 +1550,58 @@
     const next = cases.find(x=>x.status==='new');
     if(next) selectCase(next.id); else document.getElementById('casePanel').innerHTML = emptyState();
   }
+  function approvalInboxHtml(c){
+    const p = c.pendingProposal || {};
+    return `
+    <div class="stage-center">
+      <div class="authority-card">
+        <div class="ac-label">Hồ sơ trình duyệt từ chuyên viên bồi thường</div>
+        <div class="ac-amount">${p.amountText||fmt(c.amount)}</div>
+        <div class="ac-divider"></div>
+        <div class="ac-row"><span>Kết luận đề xuất</span><b>${p.label||'—'}</b></div>
+        <div class="ac-note ok" style="text-align:left;">${p.detail||c.note}</div>
+        ${p.note?`<div class="ac-note ok" style="margin-top:-10px;"><b>Ghi chú từ chuyên viên:</b> ${p.note}</div>`:''}
+      </div>
+    </div>
+    <div class="action-bar">
+      <button class="abtn back" onclick="approverSendBack('${c.id}')" title="Trả lại chuyên viên để chỉnh sửa" style="flex:1;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Trả lại chuyên viên
+      </button>
+      <button class="abtn approve" style="flex:2;" onclick="approverSign('${c.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        Ký duyệt với vai trò ${CURRENT_USER_LEVEL}
+      </button>
+    </div>`;
+  }
+  function approverSign(id){
+    const c = cases.find(x=>x.id===id);
+    if(!c) return;
+    const p = c.pendingProposal || {};
+    const statusMap = {full:'approved', partial:'partial', reject:'rejected'};
+    const trail = c.auditTrail || baseTrail(c);
+    trail.push({t:nowLabel(), title:'Ký số & phát hành quyết định — '+(p.label||''), detail:(p.detail||'')+' Đã ký số bởi '+CURRENT_USER_LEVEL+' (four-eyes hoàn tất).', final:true, items:p.items||null});
+    history.unshift({id:c.id, type:c.type, subject:c.subject, role:c.role, amount:c.amount, status:statusMap[p.pendingType]||'approved', decidedAt:nowLabel(), trail:trail, resultAmount:p.amountText});
+    cases = cases.filter(x=>x.id!==c.id);
+    showToast('Đã ký duyệt với vai trò '+CURRENT_USER_LEVEL);
+    activeId = null; window._current = null;
+    renderQueue();
+    document.getElementById('casePanel').innerHTML = noSelectionState();
+  }
+  function approverSendBack(id){
+    const c = cases.find(x=>x.id===id);
+    if(!c) return;
+    c.auditTrail = c.auditTrail || baseTrail(c);
+    c.auditTrail.push({t:nowLabel(), title:'Trả lại chuyên viên bồi thường', detail:CURRENT_USER_LEVEL+' yêu cầu xem xét/bổ sung lại trước khi trình duyệt lại.', final:false});
+    c.status = 'new';
+    c.escalatedTo = null;
+    c.pendingProposal = null;
+    c.note = 'Đã bị '+CURRENT_USER_LEVEL+' trả lại để xem xét lại.';
+    showToast('Đã trả lại hồ sơ cho chuyên viên bồi thường');
+    activeId = null; window._current = null;
+    renderQueue();
+    document.getElementById('casePanel').innerHTML = noSelectionState();
+  }
   function finalizeEscalate(){
     const c = window._current;
     const labelMap = {full:'Duyệt toàn bộ', partial:'Duyệt một phần', reject:'Từ chối chi trả'};
@@ -1466,6 +1615,8 @@
       final:false, items:window._pendingItems||null
     });
     c.status = 'awaiting_approval';
+    c.escalatedTo = required;
+    c.pendingProposal = {label: labelMap[pendingType], amountText: window._pendingAmountText, detail: window._pendingDetail, pendingType: pendingType, items: window._pendingItems||null, note: note};
     c.note = 'Đã trình đề xuất "'+labelMap[pendingType]+'" ('+window._pendingAmountText+') lên '+required+' — chờ ký duyệt.';
     activeId = null;
     renderQueue();
@@ -1675,6 +1826,7 @@
     document.getElementById('historyView').classList.toggle('active', view==='history');
     document.getElementById('btnGoQueue').classList.toggle('active', view==='queue');
     document.getElementById('btnGoHistory').classList.toggle('active', view==='history');
+    document.getElementById('queueFilterbar').style.display = view==='queue' ? 'flex' : 'none';
     if(view==='history'){ renderHistory(); if(!activeHistId && history.length) selectHistoryCase(history[0].id); }
   }
   function setHistFilter(f, el){
@@ -1685,28 +1837,17 @@
   }
   const resultLabel = {approved:'Đã duyệt toàn bộ', partial:'Duyệt một phần', rejected:'Từ chối'};
   const resultClass = {approved:'approved', partial:'partial', rejected:'rejected'};
-  const pendingStatusMap = {pending_approval:'awaiting_approval', pending_medical:'awaiting_medical'};
-  function pendingBadge(c){
-    if(c.status==='awaiting_medical') return {style:'background:rgba(14,148,136,0.14);color:#0E9488;', text:'Chờ ý kiến y khoa'};
-    return {style:'background:rgba(148,92,204,0.14);color:#7C4DBE;', text:'Chờ '+c.authority};
+  function historyMatchesRange(h, range){
+    if(range==='all') return true;
+    // Bản demo: mọi hồ sơ đều xử lý "hôm nay", nên today/week/month đều khớp trong dữ liệu mẫu.
+    return true;
   }
   function renderHistory(){
-    if(pendingStatusMap[histFilter]){
-      const pending = cases.filter(x=>x.status===pendingStatusMap[histFilter]);
-      const listEl = document.getElementById('historyList');
-      const emptyMsg = histFilter==='pending_medical' ? 'Hiện không có hồ sơ nào đang chờ ý kiến y khoa.' : 'Hiện không có hồ sơ nào đang chờ cấp trên ký duyệt.';
-      listEl.innerHTML = pending.length ? pending.map(c=>{
-        const b = pendingBadge(c);
-        return `
-        <div class="hist-item ${c.id===activeHistId?'active':''}" onclick="selectPendingCase('${c.id}')">
-          <div class="hist-top"><span class="hist-id">${c.id}</span><span class="hist-result" style="${b.style}">${b.text}</span></div>
-          <div class="hist-sub">${c.type} · ${c.subject}</div>
-          <div class="hist-date">${c.note}</div>
-        </div>`;
-      }).join('') : `<div class="history-empty">${emptyMsg}</div>`;
-      return;
-    }
-    const list = histFilter==='all' ? history : history.filter(h=> histFilter==='approved' ? (h.status==='approved'||h.status==='partial') : h.status===histFilter);
+    const q = (document.getElementById('histSearch')?.value||'').trim().toLowerCase();
+    const range = document.getElementById('histRange')?.value || 'all';
+    let list = histFilter==='all' ? history : history.filter(h=> histFilter==='approved' ? (h.status==='approved'||h.status==='partial') : h.status===histFilter);
+    if(q) list = list.filter(h=> h.id.toLowerCase().includes(q) || h.subject.toLowerCase().includes(q));
+    list = list.filter(h=>historyMatchesRange(h, range));
     const listEl = document.getElementById('historyList');
     if(list.length===0){
       listEl.innerHTML = '<div class="history-empty">Chưa có hồ sơ nào trong mục này.<br>Các case bạn xử lý xong sẽ xuất hiện ở đây.</div>';
@@ -1718,27 +1859,6 @@
           <div class="hist-date">${h.decidedAt}${h.resultAmount?' · '+h.resultAmount:''}</div>
         </div>`).join('');
     }
-  }
-  function selectPendingCase(id){
-    activeHistId = id;
-    renderHistory();
-    const c = cases.find(x=>x.id===id);
-    const panel = document.getElementById('auditPanel');
-    if(!c){ panel.innerHTML=''; return; }
-    const trail = c.auditTrail || [];
-    const b = pendingBadge(c);
-    panel.innerHTML = `
-      <div class="audit-header">
-        <div class="ch-top" style="margin-bottom:6px;"><span class="ch-id">${c.id}</span><span class="hist-result" style="${b.style}">${b.text}${c.status==='awaiting_approval'?' ký duyệt':''}</span></div>
-        <div class="ch-sub">${c.type} · ${c.subject} — ${c.role} · Yêu cầu ${fmt(c.amount)}</div>
-      </div>
-      <div class="audit-body">
-        ${trail.map(step=>`
-          <div class="audit-line">
-            <div class="audit-dot ${step.final?'final':''}">${step.final?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/></svg>'}</div>
-            <div><div class="audit-title">${step.title}</div><div class="audit-meta">${step.t}</div><div class="audit-detail">${step.detail}</div></div>
-          </div>`).join('')}
-      </div>`;
   }
   function selectHistoryCase(id){
     activeHistId = id;
@@ -1800,6 +1920,7 @@
   document.addEventListener('click', (e)=>{
     if(!e.target.closest('.kebab')) closeKebab();
     if(!e.target.closest('.notif-wrap')) document.getElementById('notifMenu').classList.remove('show');
+    if(!e.target.closest('.role-wrap')) document.getElementById('roleMenu').classList.remove('show');
   });
   function toggleNotifications(){ document.getElementById('notifMenu').classList.toggle('show'); }
   document.querySelectorAll('.otp-row input').forEach((inp,idx,arr)=>{
