@@ -343,6 +343,10 @@
   .vp-breakdown tr:first-child td{border-top:none;}
   .vp-breakdown td:last-child{text-align:right;}
   .vp-breakdown tr.vp-total td{font-weight:600;color:var(--blue-900);border-top:1.5px solid var(--line);}
+  .vp-edit{padding:2px 6px;border-radius:6px;outline:none;cursor:text;}
+  .vp-edit:hover{background:rgba(10,132,255,0.06);}
+  .vp-edit:focus{background:#fff;box-shadow:0 0 0 2px var(--ios-blue) inset;}
+  .vp-edit-hint{font-size:10px;color:var(--ink-3);padding:6px 4px 0;font-style:italic;}
 
   .accordion.locked{background:rgba(10,61,102,0.05);border-color:rgba(10,61,102,0.18);}
   .accordion.locked .accordion-head{color:var(--blue-950);}
@@ -932,8 +936,20 @@
   }
 
   /* ---- build data fields from OCR (data-driven, no manual authoring per case) ---- */
+  function computeInvoiceScale(c){
+    let raw = [];
+    c.docs.forEach(d=>{ const o=docOcr[d]; if(o && o.lineItems) raw = raw.concat(o.lineItems); });
+    const rawTotal = raw.reduce((s,li)=>s+li.amount,0);
+    return rawTotal>0 ? c.amount/rawTotal : 1;
+  }
+  function getLineAmount(c, docName, liName, rawAmount, scale){
+    const key = docName+'::'+liName;
+    if(c.ocrOverrides && c.ocrOverrides[key]!==undefined) return c.ocrOverrides[key];
+    return Math.round(rawAmount*scale/1000)*1000;
+  }
   function buildDataFields(c){
     const sections = {hanhChinh:[], chanDoan:[], vienPhi:[]};
+    const invScale = computeInvoiceScale(c);
     c.docs.forEach((docName, di)=>{
       const o = docOcr[docName];
       if(!o) return;
@@ -941,10 +957,16 @@
       if(/chẩn đoán|bệnh án|phẫu thuật|chỉ định/i.test(docName)) bucket='chanDoan';
       if(/hoá đơn|viện phí/i.test(docName)) bucket='vienPhi';
       o.fields.forEach((f,fi)=>{
+        let displayValue = f[1];
+        let scaledLineItems = null;
+        if(bucket==='vienPhi' && /tổng tiền/i.test(f[0]) && o.lineItems){
+          scaledLineItems = o.lineItems.map(li=>({name:li.name, amount:getLineAmount(c, docName, li.name, li.amount, invScale)}));
+          displayValue = fmt(scaledLineItems.reduce((s,li)=>s+li.amount,0));
+        }
         sections[bucket].push({
-          label:f[0], value:f[1], status:'ok', statusNote:'', docIdx:di,
+          label:f[0], value:displayValue, status:'ok', statusNote:'', docIdx:di,
           box:{top: 12 + ((di*3+fi)*11)%62, left:10, width:76, height:9},
-          lineItems: (bucket==='vienPhi' && /tổng tiền/i.test(f[0]) && o.lineItems) ? o.lineItems : null,
+          lineItems: scaledLineItems,
           docLabel: c.docs[di]
         });
       });
@@ -1018,10 +1040,10 @@
       thoiGianChoStatus: isThaiSan ? 'warn' : 'ok',
       dongChiTra: 10,
       hanMucRieng: [
-        {loai:'Nội trú', han:80000000},
-        {loai:'Ngoại trú', han:15000000},
-        {loai:'Nha khoa', han:5000000},
-        {loai:'Thai sản', han:20000000},
+        {loai:'Nội trú', han:c.limit},
+        {loai:'Ngoại trú', han:Math.round(c.limit*0.2/100000)*100000},
+        {loai:'Nha khoa', han:Math.round(c.limit*0.06/100000)*100000},
+        {loai:'Thai sản', han:Math.round(c.limit*0.25/100000)*100000},
       ],
       loaiTru: ['Bệnh có sẵn trước ngày hiệu lực (trừ khi đã kê khai và được chấp thuận)','Điều trị mang tính thẩm mỹ, không do bệnh lý','Nha khoa thẩm mỹ (bọc răng sứ, tẩy trắng…)'],
     };
@@ -1510,9 +1532,10 @@
                 </div>
                 <div class="vp-breakdown-body">
                   <table>
-                    ${f.lineItems.map(li=>`<tr><td>${li.name}</td><td>${fmt(li.amount)}</td></tr>`).join('')}
+                    ${f.lineItems.map(li=>`<tr><td>${li.name}</td><td><span class="vp-edit" contenteditable="true" data-doc="${f.docLabel.replace(/"/g,'&quot;')}" data-name="${li.name.replace(/"/g,'&quot;')}" onclick="event.stopPropagation();" onblur="onVpAmountEdit(this)">${fmt(li.amount)}</span></td></tr>`).join('')}
                     <tr class="vp-total"><td>Tổng theo hoá đơn</td><td>${fmt(f.lineItems.reduce((s,li)=>s+li.amount,0))}</td></tr>
                   </table>
+                  <div class="vp-edit-hint">Click vào số tiền để sửa nếu OCR đọc sai</div>
                 </div>
               </div>
             `:''}
@@ -1556,12 +1579,11 @@
   /* ---- Bảng tính chi trả (Tính chi trả — bước 2) ---- */
   function buildPaymentItems(c){
     let raw = [];
-    c.docs.forEach(d=>{ const o=docOcr[d]; if(o && o.lineItems) raw = raw.concat(o.lineItems); });
-    if(raw.length===0) raw = [{name:'Chi phí điều trị chính', amount:Math.round(c.amount*0.85)}, {name:'Chi phí khác', amount:Math.round(c.amount*0.15)}];
-    const rawTotal = raw.reduce((s,li)=>s+li.amount,0);
-    const scale = rawTotal>0 ? c.amount/rawTotal : 1;
+    c.docs.forEach(d=>{ const o=docOcr[d]; if(o && o.lineItems) o.lineItems.forEach(li=>raw.push({docName:d, name:li.name, amount:li.amount})); });
+    if(raw.length===0) raw = [{docName:null, name:'Chi phí điều trị chính', amount:Math.round(c.amount*0.85)}, {docName:null, name:'Chi phí khác', amount:Math.round(c.amount*0.15)}];
+    const scale = computeInvoiceScale(c);
     return raw.map(li=>{
-      const scaled = Math.round(li.amount*scale/1000)*1000;
+      const scaled = li.docName ? getLineAmount(c, li.docName, li.name, li.amount, scale) : Math.round(li.amount*scale/1000)*1000;
       return {name:li.name, ocrAmount:scaled, current:scaled};
     });
   }
@@ -1761,6 +1783,29 @@
   function fieldEdited(key, i, val){
     window._dataFields[key][i].value = val.trim();
     showToast('Đã cập nhật dữ liệu — ghi vào vết xử lý khi ký quyết định');
+  }
+  function onVpAmountEdit(el){
+    const c = window._current;
+    const docName = el.dataset.doc;
+    const liName = el.dataset.name;
+    const n = parseInt(el.textContent.replace(/[^\d]/g,''))||0;
+    c.ocrOverrides = c.ocrOverrides || {};
+    c.ocrOverrides[docName+'::'+liName] = n;
+    showToast('Đã sửa "'+liName+'" — cập nhật đồng bộ sang Tổng tiền và Bảng tính chi trả');
+    window._dataFields = buildDataFields(c);
+    renderDataTab('data');
+    if(window._paymentItems){
+      const old = window._paymentItems;
+      const fresh = buildPaymentItems(c);
+      window._paymentItems = fresh.map(item=>{
+        const prev = old.find(o=>o.name===item.name);
+        if(prev && prev.current!==prev.ocrAmount){
+          return {name:item.name, ocrAmount:item.ocrAmount, current:prev.current, reason:prev.reason};
+        }
+        return item;
+      });
+      if(stepIdx===1 && payStepMode==='calc') renderPaySpread();
+    }
   }
   function highlightField(key, i){
     const f = window._dataFields[key][i];
