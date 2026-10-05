@@ -181,6 +181,8 @@
   .qi-time svg{width:11px;height:11px;flex:none;}
 
   /* LOOKUP 360 */
+  .lookup-context{font-size:11.5px;color:var(--blue-800);background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.22);padding:8px 12px;border-radius:10px;margin-bottom:12px;line-height:1.5;}
+  .lookup-context b{color:var(--blue-950);}
   .lookup-btn{font-size:11px;font-weight:600;color:var(--ios-blue);background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.25);padding:5px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;margin-top:4px;}
   .lookup-btn svg{width:12px;height:12px;}
   .lookup-section{margin-bottom:16px;}
@@ -791,8 +793,9 @@
   <div class="modal glass-strong wide">
     <h3 id="lookupTitle">Tra cứu 360°</h3>
     <p class="desc">Nhập tên NĐBH, mã claim hoặc mã hợp đồng để tra toàn bộ hợp đồng, lịch sử bồi thường và thông tin liên quan trên toàn hệ thống.</p>
+    <div class="lookup-context" id="lookupContext" style="display:none;"></div>
     <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <input type="text" id="lookupSearchInput" placeholder="Ví dụ: Nguyễn Văn Bình, EB-2026-08790, HD-EB-2026…" style="margin-bottom:0;" onkeydown="if(event.key==='Enter') runLookupSearch();">
+      <input type="text" id="lookupSearchInput" placeholder="Ví dụ: Nguyễn Văn Bình, EB-2026-08790, HD-EB-2026…" style="margin-bottom:0;" oninput="document.getElementById('lookupContext').style.display='none';" onkeydown="if(event.key==='Enter') runLookupSearch();">
       <button class="btn btn-primary" style="flex:none;width:auto;padding:11px 20px;" onclick="runLookupSearch()">Tìm</button>
     </div>
     <div id="lookupResults"></div>
@@ -1833,18 +1836,26 @@
   }
 
   /* ---- TRA CỨU 360 — dùng chung cho nút trong case và ô tìm kiếm toàn trang (B1 fix) ---- */
-  function openLookup360(){
-    const c = window._current;
-    openModal('modalLookup');
-    document.getElementById('lookupSearchInput').value = c.subject;
-    runLookupSearch();
-  }
+  function openLookup360(){ openGlobalSearch(); }
   function openGlobalSearch(){
     openModal('modalLookup');
-    document.getElementById('lookupSearchInput').value = '';
-    document.getElementById('lookupTitle').textContent = 'Tra cứu 360° toàn hệ thống';
-    document.getElementById('lookupResults').innerHTML = '<div class="note-box">Nhập tên NĐBH, mã claim hoặc mã hợp đồng rồi bấm Tìm (hoặc Enter).</div>';
-    setTimeout(()=>document.getElementById('lookupSearchInput').focus(), 50);
+    const ctxEl = document.getElementById('lookupContext');
+    const cur = window._current;
+    const hasOpenCase = cur && activeId && cases.some(x=>x.id===activeId) && document.getElementById('queueView').classList.contains('active');
+    if(hasOpenCase){
+      // Đang xử lý 1 case: tự điền sẵn NĐBH của case đó và hiện kết quả ngay
+      document.getElementById('lookupSearchInput').value = cur.subject;
+      ctxEl.innerHTML = 'Đang hiển thị NĐBH của hồ sơ <b>'+cur.id+'</b> · Sửa ô tìm kiếm bên dưới nếu muốn tra người khác';
+      ctxEl.style.display = 'block';
+      runLookupSearch();
+    } else {
+      // Chưa mở case nào: để trống cho người dùng tự nhập
+      ctxEl.style.display = 'none';
+      document.getElementById('lookupSearchInput').value = '';
+      document.getElementById('lookupTitle').textContent = 'Tra cứu 360° toàn hệ thống';
+      document.getElementById('lookupResults').innerHTML = '<div class="note-box">Nhập tên NĐBH, mã claim hoặc mã hợp đồng rồi bấm Tìm (hoặc Enter).</div>';
+      setTimeout(()=>document.getElementById('lookupSearchInput').focus(), 50);
+    }
   }
   function buildFamilyMembers(subject){
     const seed = parseInt(stableCode(subject).slice(-1))||0;
